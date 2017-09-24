@@ -1,0 +1,15 @@
+.root {
+    position: fixed;
+    height: 100%;
+    width: 241px;
+    top: 64px;
+}
+
+.paper {
+    height: 100%;
+}
+
+.rightIcon {
+    text-align: center;
+    line-height: 24px;
+}
