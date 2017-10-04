@@ -1,5 +1,10 @@
 import { Server } from 'http';
 import app from './server'
+import RedisConnection from './lib/redis';
+
+const redisConnection = new RedisConnection();
+
+redisConnection.run();
 
 const server = new Server(app);
 
