@@ -1,0 +1,29 @@
+.root {
+    /* max-width: 256px; */
+    margin-top: 200px;
+}
+
+.paper {
+    margin: 0 auto;
+    max-width: 320px;
+    text-align: center;
+}
+
+.form {
+    padding: 32px;
+}
+
+.input, .error {
+    display: block;
+    margin-bottom: 30px;
+}
+
+.error {
+    font-size: 14px;
+    color: rgb(244, 67, 54);
+}
+
+.button {
+    width: 97px;
+    line-height: 36px;
+}
