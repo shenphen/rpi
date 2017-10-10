@@ -42,23 +42,35 @@ class LoginContainer extends Component {
     onSubmit(e) {
         e.preventDefault();
         
-        this.setState({loading: true});
-        
-        const form = new FormData(document.getElementById('login-form'))
-        
-        fetch("/login", {
-          method: "POST",
-          body: form
-        })
-        .then(() => {
-            console.log('Processing logging');
-            setTimeout(() => {
-                this.setState({loading: false});
-            }, 2000)
-        })
-        .catch(err => {
-            console.log(err);
-        });
+        const form = new FormData(document.getElementById('login-form'));
+        const formIsFilled = form.get('login') && form.get('password');
+
+        if(formIsFilled) {
+
+            this.setState({loading: true});
+
+            fetch("/login", {
+              method: "POST",
+              body: form
+            })
+            .then(() => {
+                console.log('Processing logging');
+                setTimeout(() => {
+                    this.setState({loading: false});
+                }, 2000)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        }
+        else {
+            let { errors } = this.state;
+
+            if(!form.get('login')) errors.login = 'Wprowadź login';
+            if(!form.get('password')) errors.password = 'Wprowadź hasło';
+
+            this.setState({errors});
+        }
     }
 }
 

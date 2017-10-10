@@ -20,16 +20,16 @@ const Login = ({errors, onChange, onSubmit, loading}) => {
                         className={styles.input}
                         hintText="Login" 
                         errorText={errors.login}
-                        onChange={(e) => {onChange(e.target.name);console.log(e.target.name)} } />
+                        onChange={(e) => {onChange(e.target.name)} } />
                     <br/>
                     <TextField type="password" name="password"
                         className={styles.input}
                         hintText="Hasło" 
                         errorText={errors.password}
-                        onChange={(e) => {onChange(e.target.name); console.log(e.target.name)}} />
+                        onChange={(e) => {onChange(e.target.name)}} />
                     <br/>
-                    {loading ? 
-                    <RaisedButton className={styles.button} label="Zaloguj" labelStyle={{position: 'absolute', left: 8}} icon={<LoaderIcon style={{margin: '-1px 0 0'}} />} primary={true} disabled={true} /> 
+                    {loading ?
+                    <RaisedButton className={styles.button} label="Zaloguj" icon={<LoaderIcon style={{position: 'absolute', left: 24, top: 6}} />} labelStyle={{paddingLeft: 16}} primary={true} disabled={true} /> 
                     : <RaisedButton className={styles.button} label="Zaloguj" primary={true} type="submit" />}
                 </form>
             </Paper>
