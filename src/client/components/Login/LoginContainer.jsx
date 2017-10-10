@@ -41,23 +41,39 @@ class LoginContainer extends Component {
 
     onSubmit(e) {
         e.preventDefault();
+        const self = this;
         
-        const form = new FormData(document.getElementById('login-form'));
-        const formIsFilled = form.get('login') && form.get('password');
+        const form = new FormData(document.getElementById('login-form')),
+              login = form.get('login'),
+              password = form.get('password');
+
+        const formIsFilled = login && password;
 
         if(formIsFilled) {
 
-            this.setState({loading: true});
+            const data = { login, password };
 
+            this.setState({loading: true});
+            
             fetch("/login", {
               method: "POST",
-              body: form
+              headers: new Headers({"Content-Type": "application/json"}),
+              body: JSON.stringify(data)
             })
-            .then(() => {
-                console.log('Processing logging');
-                setTimeout(() => {
-                    this.setState({loading: false});
-                }, 2000)
+            .then(res => {
+                res.json().then((result) => {
+                    let newState = {loading: false};
+                    newState.errors = {...self.state.errors};
+
+                    if(result && result.error) {
+                        newState.errors.header = result.error;
+                    }
+                    else if(result.access) {
+                        newState.errors.header = '';
+                    }
+
+                    this.setState(newState);
+                })
             })
             .catch(err => {
                 console.log(err);
@@ -75,3 +91,4 @@ class LoginContainer extends Component {
 }
 
 export default LoginContainer;
+
