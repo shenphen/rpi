@@ -65,6 +65,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
+    "server:dev": "DEBUG=* REDIS_PORT=6666 ./node_modules/babel-cli/bin/babel-node.js ./src/server",
     "server": "./node_modules/babel-cli/bin/babel-node.js ./src/server"
   },
   "jest": {
