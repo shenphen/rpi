@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -25,6 +25,9 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      loggedIn: false
+    }
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -43,22 +46,19 @@ class App extends Component {
     return (
       <MuiThemeProvider muiTheme={darkTheme ? getMuiTheme(darkBaseTheme) : null}>
 
-        <Switch>
-          <Route exact path="/login" component={Login} />
-          <Route path="/" children={({match}) => (
-            <div className={cx('clearfix')}>
-              <TopBar />
-              <Menu handleChange={this.handleChange} />
-              <Content />
-              
-              {/*<span>Current pathname: {location.pathname}</span>
-              <button onClick={() => push('/test')}>Change url</button>
-              <button onClick={() => goBack()}>Go Back</button>*/}
-              {/* <DevTools /> */}
-            </div>
+          <Route path="/" render={() => {
+              return this.state.loggedIn ? (
+                    <div className={cx('clearfix')}>
+                      <TopBar />
+                      <Menu handleChange={this.handleChange} />
+                      <Content />
+                    </div>
+              ) :
 
-          )} />
-        </Switch>
+              (
+                <Login />
+              )
+          }} />
       </MuiThemeProvider>
 
     );
