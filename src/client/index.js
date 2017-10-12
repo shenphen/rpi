@@ -8,15 +8,18 @@ import { Route } from 'react-router-dom';
 // import { AppContainer } from 'react-hot-loader';
 
 import ThemeStore from './stores/ThemeStore';
+import TokenStore from './stores/TokenStore';
 import App from './App';
 
 
 import 'normalize.css';
 
 const themeStore = new ThemeStore();
+const tokenStore = new TokenStore();
 
 const stores = {
-  themeStore
+  themeStore,
+  tokenStore
 }
 
 const browserHistory = createBrowserHistory();

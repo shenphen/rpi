@@ -6,7 +6,7 @@ import loginRoutes from './routes/login';
 
 const app = new Express();
 
-app.use(bodyParser.json({strict: false}));
+app.use(bodyParser.json());
 app.use(Express.static(path.join(__dirname, '..', '..', 'dist')));
 
 

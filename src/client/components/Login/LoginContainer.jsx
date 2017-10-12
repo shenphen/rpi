@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import { inject, observer } from "mobx-react";
 
 import Login from './Login';
 
 // const required = 'Pole wymagane.';
 // const incorrectData = 'Nieprawidłowy login i/lub hasło.';
 
-class LoginContainer extends Component {
+@inject('tokenStore')
+@observer class LoginContainer extends Component {
 
     constructor(props) {
         super(props);
@@ -42,7 +44,10 @@ class LoginContainer extends Component {
     onSubmit(e) {
         e.preventDefault();
         const self = this;
-        
+
+        const { history } = this.props;
+        const { setToken } = this.props.tokenStore;
+
         const form = new FormData(document.getElementById('login-form')),
               login = form.get('login'),
               password = form.get('password');
@@ -70,6 +75,8 @@ class LoginContainer extends Component {
                     }
                     else if(result.access) {
                         newState.errors.header = '';
+                        setToken(result.token);
+                        history.push('/dashboard');
                     }
 
                     this.setState(newState);

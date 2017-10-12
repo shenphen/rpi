@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { inject, observer } from 'mobx-react';
+import { inject, observer, observe } from 'mobx-react';
 import { Route } from 'react-router-dom';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -19,6 +19,7 @@ const cx = classnames.bind(styles);
 // import DevTools from 'mobx-react-devtools';
 
 @inject('themeStore')
+@inject('tokenStore')
 @observer
 class App extends Component {
 
@@ -26,9 +27,14 @@ class App extends Component {
     super(props);
 
     this.state = {
-      loggedIn: false
+      loggedIn: !!props.token
     }
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentWillReact() {
+    const { token } = this.props.tokenStore;
+    if(!!token !== this.state.loggedIn) this.setState({loggedIn: !!token})
   }
 
   handleChange(event, index) {
@@ -56,7 +62,7 @@ class App extends Component {
               ) :
 
               (
-                <Login />
+                <Login history={this.props.history}/>
               )
           }} />
       </MuiThemeProvider>
