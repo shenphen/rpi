@@ -6,7 +6,7 @@ import Paper from 'material-ui/Paper';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
 import styles from './Content.css'
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 const Home = () => (
   <div>
@@ -32,6 +32,12 @@ const About = () => (
   </div>
 )
 
+const NotFound = () => (
+  <div>
+    <h2>NotFound</h2>
+  </div>
+)
+
 @inject('themeStore')
 @observer class Content extends React.Component {
   
@@ -39,10 +45,12 @@ const About = () => (
     return (
       <Paper className={styles.root}>
         <Switch>
-          <Route exact path="/state" component={State}/>  
+          <Route exact path="/state" compongit difent={State}/>
           <Route path="/about" component={About}/>
           <Route path="/statistics" component={Statistics}/>
-          <Route path="*" component={Home}/>
+          <Route path="/dashboard" component={Home}/>
+          <Redirect from='/' to='/dashboard'/>
+          <Route path="/*" component={NotFound}/>
         </Switch>
       </Paper>
     );
