@@ -5,6 +5,7 @@ import { Provider } from 'mobx-react';
 import { RouterStore, syncHistoryWithStore } from 'mobx-react-router';
 import { Router } from 'react-router';
 import { Route } from 'react-router-dom';
+import WebFont from 'webfontloader';
 // import { AppContainer } from 'react-hot-loader';
 
 import ThemeStore from './stores/ThemeStore';
@@ -37,6 +38,12 @@ render(
   document.getElementById('root')
   
 );
+
+WebFont.load({
+  google: {
+    families: ['Roboto:n3,n4,n7', 'sans-serif']
+  }
+});
 
 // if (module.hot) {
 //   module.hot.accept('./components/App', () => {
