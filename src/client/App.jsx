@@ -27,14 +27,14 @@ class App extends Component {
     super(props);
 
     this.state = {
-      loggedIn: !!props.token
+      loggedIn: !!props.tokenStore.token
     }
     this.handleChange = this.handleChange.bind(this);
   }
 
   componentWillReact() {
     const { token } = this.props.tokenStore;
-    if(!!token !== this.state.loggedIn) this.setState({loggedIn: !!token})
+    this.setState({loggedIn: !!token})
   }
 
   handleChange(event, index) {
@@ -52,8 +52,8 @@ class App extends Component {
     return (
       <MuiThemeProvider muiTheme={darkTheme ? getMuiTheme(darkBaseTheme) : null}>
 
-          <Route path="/" render={() => {
-              return this.state.loggedIn ? (
+          <Route path="/" render={({location}) => {
+              return this.state.loggedIn && location.pathname !== '/login' ? (
                     <div className={cx('clearfix')}>
                       <TopBar />
                       <Menu handleChange={this.handleChange} />
@@ -62,7 +62,7 @@ class App extends Component {
               ) :
 
               (
-                <Login history={this.props.history}/>
+                <Login />
               )
           }} />
       </MuiThemeProvider>

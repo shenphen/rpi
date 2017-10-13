@@ -10,9 +10,10 @@ class tokenStore {
         this.token = sessionStorage.token || '';
         this.timer = null;
 
-        this.removeToken = this.removeToken.bind(this);
+        this.handleLeave = this.handleLeave.bind(this);
         this.setToken = this.setToken.bind(this);
         this.refreshTimer = this.refreshTimer.bind(this);
+        this.setInitialState = this.setInitialState.bind(this);
     }
 
     refreshTimer() {
@@ -24,7 +25,7 @@ class tokenStore {
 
         if(!this.timer) {
             this.timer = setInterval(() => {
-                this.secondsLeft > 0 ? this.secondsLeft-- : this.removeToken();
+                this.secondsLeft > 0 ? this.secondsLeft-- : this.handleLeave();
             }, 1000);
         }
     }
@@ -33,9 +34,15 @@ class tokenStore {
         return this.secondsLeft;
     }
 
-    removeToken() {
+    handleLeave() {
         this.token = sessionStorage.token = '';
         clearInterval(this.timer);
+        this.setInitialState();
+    }
+
+    setInitialState() {
+        this.timer = null;
+        this.secondsLeft = EXPIRATION_TIME_IN_SECONDS;
     }
 }
 

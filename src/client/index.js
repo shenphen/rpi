@@ -18,15 +18,16 @@ import 'normalize.css';
 const themeStore = new ThemeStore();
 const tokenStore = new TokenStore();
 
-const stores = {
-  themeStore,
-  tokenStore
-}
-
 const browserHistory = createBrowserHistory();
 const routingStore = new RouterStore();
 
 const history = syncHistoryWithStore(browserHistory, routingStore);
+
+const stores = {
+  themeStore,
+  tokenStore,
+  routing: routingStore
+}
 
 render(
   <Provider {...stores}>

@@ -7,6 +7,7 @@ import Login from './Login';
 // const incorrectData = 'Nieprawidłowy login i/lub hasło.';
 
 @inject('tokenStore')
+@inject('routing')
 @observer class LoginContainer extends Component {
 
     constructor(props) {
@@ -23,6 +24,10 @@ import Login from './Login';
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        this.props.tokenStore.handleLeave();
     }
 
     render() {
@@ -45,7 +50,7 @@ import Login from './Login';
         e.preventDefault();
         const self = this;
 
-        const { history } = this.props;
+        const { routing } = this.props;
         const { setToken } = this.props.tokenStore;
 
         const form = new FormData(document.getElementById('login-form')),
@@ -76,7 +81,7 @@ import Login from './Login';
                     else if(result.access) {
                         newState.errors.header = '';
                         setToken(result.token);
-                        history.push('/dashboard');
+                        routing.push('/dashboard');
                     }
 
                     this.setState(newState);
