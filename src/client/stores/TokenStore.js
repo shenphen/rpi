@@ -1,6 +1,6 @@
 import { observable } from 'mobx';
 
-const EXPIRATION_TIME_IN_SECONDS = 300;
+const EXPIRATION_TIME_IN_SECONDS = 180;
 
 class tokenStore {
     @observable secondsLeft = EXPIRATION_TIME_IN_SECONDS;
@@ -12,6 +12,7 @@ class tokenStore {
 
         this.removeToken = this.removeToken.bind(this);
         this.setToken = this.setToken.bind(this);
+        this.refreshTimer = this.refreshTimer.bind(this);
     }
 
     refreshTimer() {
