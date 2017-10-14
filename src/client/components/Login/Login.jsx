@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';

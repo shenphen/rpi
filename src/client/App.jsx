@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { inject, observer, observe } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { Route } from 'react-router-dom';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
