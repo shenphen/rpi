@@ -5,7 +5,7 @@ const debug = require('debug')('redis');
 
 const config = {
     port: process.env.REDIS_PORT || 6379,
-    bin: '/opt/redis-3.2.8/src/redis-server'
+    bin: process.env.REDIS_BIN_PATH || '/usr/local/bin/redis-server'
 }
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
