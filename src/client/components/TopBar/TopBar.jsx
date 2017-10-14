@@ -8,15 +8,12 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Power from 'material-ui/svg-icons/action/power-settings-new';
 
-import Timer from './Timer';
-
 import styles from './TopBar.css';
 
 const cx = classnames.bind(styles);
 
 const RevealMenu = (props) => (
   <div>
-    <Timer />
     <IconMenu
       {...props}
       iconButtonElement={

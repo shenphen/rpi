@@ -12,7 +12,7 @@ app.use(Express.static(path.join(__dirname, '..', '..', 'dist')));
 
 
 app.use('/login', loginRoutes);
-app.use('/', auth);
+app.use('/auth', auth);
 
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname,  '..', '..', 'dist', 'index.html'));

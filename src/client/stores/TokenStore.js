@@ -7,7 +7,7 @@ class tokenStore {
     @observable token = '';
 
     constructor() {
-        this.token = sessionStorage.token || '';
+        this.token = localStorage.token || '';
         this.timer = null;
 
         this.handleLeave = this.handleLeave.bind(this);
@@ -21,13 +21,13 @@ class tokenStore {
     }
 
     setToken(token) {
-        this.token = sessionStorage.token = token;
+        this.token = localStorage.token = token;
 
-        if(!this.timer) {
-            this.timer = setInterval(() => {
-                this.secondsLeft > 0 ? this.secondsLeft-- : this.handleLeave();
-            }, 1000);
-        }
+        // if(!this.timer) {
+        //     this.timer = setInterval(() => {
+        //         this.secondsLeft > 0 ? this.secondsLeft-- : this.handleLeave();
+        //     }, 1000);
+        // }
     }
 
     get timeLeftInSeconds() {
@@ -35,7 +35,7 @@ class tokenStore {
     }
 
     handleLeave() {
-        this.token = sessionStorage.token = '';
+        this.token = localStorage.token = '';
         clearInterval(this.timer);
         this.setInitialState();
     }

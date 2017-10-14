@@ -7,27 +7,32 @@ const router = new express.Router();
 
 router.post('/', (req, res, next) => {
     if(req.body && req.body.token) {
-        const { login, password } = req.body;
-        const token = jwt.sign({ login, password }, config.jwtSecret, { expiresIn: config.tokenExpiresInSeconds });
 
         jwt.verify(req.body.token, config.jwtSecret, (err, decoded) => {
             if(err) {
-                return res.status(401).end();
+                return res.json({
+                    access: false,
+                    redirectToLogin: true
+                });
             }
 
-            if(decoded.login === config.adminLogin && decoded.password === config.adminPassword) {
-                res.json({
-                    access: true,
-                    token
-                })
-                return next();
+            if(decoded && decoded.login === config.adminLogin && decoded.password === config.adminPassword) {
+                return res.json({
+                    access: true
+                });
             }
-
-            return res.status(404).end();
+            else {
+                return res.json({
+                    access: false
+                });
+            }
         })
     }
     else {
-        return res.status(401).end();
+        return res.json({
+            access: false,
+            redirectToLogin: true
+        });
     }
 })
 

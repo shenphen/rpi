@@ -14,8 +14,6 @@ const Login = ({errors, onChange, onSubmit, loading}) => {
 
     return (
         <div className={styles.root}>
-            <Redirect to='/login'/>
-
             <Paper className={styles.paper}>
                 <form action="/" className={styles.form} id="login-form" onSubmit={onSubmit} encType="multipart/form-data">
                     {errors.header && <span className={styles.error}>{errors.header}</span>}

@@ -26,10 +26,6 @@ import Login from './Login';
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    componentDidMount() {
-        this.props.tokenStore.handleLeave();
-    }
-
     render() {
         return(
             <Login {...this.state} onChange={this.onChange} onSubmit={this.onSubmit} />
@@ -78,7 +74,7 @@ import Login from './Login';
                     if(result && result.error) {
                         newState.errors.header = result.error;
                     }
-                    else if(result.access) {
+                    else if(result.access && result.token) {
                         newState.errors.header = '';
                         setToken(result.token);
                         routing.push('/dashboard');

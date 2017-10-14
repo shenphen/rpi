@@ -20,6 +20,7 @@ const cx = classnames.bind(styles);
 
 @inject('themeStore')
 @inject('tokenStore')
+@inject('routing')
 @observer
 class App extends Component {
 
@@ -27,14 +28,16 @@ class App extends Component {
     super(props);
 
     this.state = {
-      loggedIn: !!props.tokenStore.token
+      loggedIn: false
     }
+
+    this.checkToken();
     this.handleChange = this.handleChange.bind(this);
+    this.checkToken = this.checkToken.bind(this);
   }
 
   componentWillReact() {
-    const { token } = this.props.tokenStore;
-    this.setState({loggedIn: !!token})
+    this.checkToken()
   }
 
   handleChange(event, index) {
@@ -70,8 +73,29 @@ class App extends Component {
     );
   }
 
-  onReset = () => {
-    this.props.themeStore.resetTimer();
+  checkToken() {
+    return fetch("/auth", {
+      method: "POST",
+      headers: new Headers({"Content-Type": "application/json"}),
+      body: JSON.stringify({token: localStorage.token})
+    })
+    .then(res => {
+      res.json().then(json => {
+
+        this.setState({loggedIn: json.access});
+
+        if(json.redirectToLogin) {
+          const { push, location } = this.props.routing;
+          if(location.pathname !== '/login') push('/login');
+        }
+
+      })
+    })
+    .catch(err => {
+        console.log(err);
+        return false;
+    })
+   
   }
 };
 
