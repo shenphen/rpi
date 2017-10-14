@@ -10,7 +10,7 @@ class tokenStore {
         this.token = localStorage.token || '';
         this.timer = null;
 
-        this.handleLeave = this.handleLeave.bind(this);
+        this.onLogout = this.onLogout.bind(this);
         this.setToken = this.setToken.bind(this);
         this.refreshTimer = this.refreshTimer.bind(this);
         this.setInitialState = this.setInitialState.bind(this);
@@ -34,12 +34,12 @@ class tokenStore {
         return this.secondsLeft;
     }
 
-    handleLeave() {
+    onLogout() {
         this.token = localStorage.token = '';
-        clearInterval(this.timer);
-        this.setInitialState();
+        // clearInterval(this.timer);
+        // this.setInitialState();
     }
-
+    
     setInitialState() {
         this.timer = null;
         this.secondsLeft = EXPIRATION_TIME_IN_SECONDS;
