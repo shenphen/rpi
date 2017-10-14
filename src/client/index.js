@@ -9,21 +9,25 @@ import WebFont from 'webfontloader';
 // import { AppContainer } from 'react-hot-loader';
 
 import ThemeStore from './stores/ThemeStore';
+import TokenStore from './stores/TokenStore';
 import App from './App';
 
 
 import 'normalize.css';
 
 const themeStore = new ThemeStore();
-
-const stores = {
-  themeStore
-}
+const tokenStore = new TokenStore();
 
 const browserHistory = createBrowserHistory();
 const routingStore = new RouterStore();
 
 const history = syncHistoryWithStore(browserHistory, routingStore);
+
+const stores = {
+  themeStore,
+  tokenStore,
+  routing: routingStore
+}
 
 render(
   <Provider {...stores}>

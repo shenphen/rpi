@@ -1,0 +1,6 @@
+{
+    "jwtSecret": "5up3reXTr34MlYSEcR3T",
+    "adminLogin": "admin",
+    "adminPassword": "admin",
+    "tokenExpiresInSeconds": 180
+}

@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import { inject, observer } from "mobx-react";
 
 import Login from './Login';
 
 // const required = 'Pole wymagane.';
 // const incorrectData = 'Nieprawidłowy login i/lub hasło.';
 
-class LoginContainer extends Component {
+@inject('tokenStore')
+@inject('routing')
+@observer class LoginContainer extends Component {
 
     constructor(props) {
         super(props);
@@ -41,23 +44,44 @@ class LoginContainer extends Component {
 
     onSubmit(e) {
         e.preventDefault();
-        
-        const form = new FormData(document.getElementById('login-form'));
-        const formIsFilled = form.get('login') && form.get('password');
+        const self = this;
+
+        const { routing } = this.props;
+        const { setToken } = this.props.tokenStore;
+
+        const form = new FormData(document.getElementById('login-form')),
+              login = form.get('login'),
+              password = form.get('password');
+
+        const formIsFilled = login && password;
 
         if(formIsFilled) {
 
-            this.setState({loading: true});
+            const data = { login, password };
 
+            this.setState({loading: true});
+            
             fetch("/login", {
               method: "POST",
-              body: form
+              headers: new Headers({"Content-Type": "application/json"}),
+              body: JSON.stringify(data)
             })
-            .then(() => {
-                console.log('Processing logging');
-                setTimeout(() => {
-                    this.setState({loading: false});
-                }, 2000)
+            .then(res => {
+                res.json().then((result) => {
+                    let newState = {loading: false};
+                    newState.errors = {...self.state.errors};
+
+                    if(result && result.error) {
+                        newState.errors.header = result.error;
+                    }
+                    else if(result.access && result.token) {
+                        newState.errors.header = '';
+                        setToken(result.token);
+                        routing.push('/dashboard');
+                    }
+
+                    this.setState(newState);
+                })
             })
             .catch(err => {
                 console.log(err);
