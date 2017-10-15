@@ -14,19 +14,20 @@ bluebird.promisifyAll(redis.Multi.prototype);
 class RedisConnection {
     constructor() {
         this.port = config.port;
-        this.server = new RedisServer(config);
+        // this.server = new RedisServer(config);
         this.client = null;
     }
 
     run() {
-        this.server.open()
-          .then(() => {
-              debug(`Redis server runs on port ${this.port}`);
-              this.client = redis.createClient(this.port);
-          })
-          .catch(err => {
-              debug(err);
-          })
+        this.client = redis.createClient(this.port);
+        // this.server.open()
+        //   .then(() => {
+        //       debug(`Redis server runs on port ${this.port}`);
+        //       this.client = redis.createClient(this.port);
+        //   })
+        //   .catch(err => {
+        //       debug(err);
+        //   })
     }
 }
 
