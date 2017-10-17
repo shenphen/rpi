@@ -1,33 +1,18 @@
 import redis from 'redis';
-import RedisServer from 'redis-server';
 import bluebird from 'bluebird';
 const debug = require('debug')('redis');
 
 const config = {
     port: process.env.REDIS_PORT || 6379,
-    bin: '/opt/redis-3.2.8/src/redis-server'
+    bin: process.env.REDIS_BIN_PATH || '/usr/local/bin/redis-server'
 }
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
-class RedisConnection {
-    constructor() {
-        this.port = config.port;
-        this.server = new RedisServer(config);
-        this.client = null;
-    }
+const client = redis.createClient(config.port);
 
-    run() {
-        this.server.open()
-          .then(() => {
-              debug(`Redis server runs on port ${this.port}`);
-              this.client = redis.createClient(this.port);
-          })
-          .catch(err => {
-              debug(err);
-          })
-    }
-}
+client.on('connect' , () => debug('redis connected'));
+client.on('error' , (error) => debug(error));
 
-export default RedisConnection;
+export default client;
