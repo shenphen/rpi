@@ -1,5 +1,4 @@
 import redis from 'redis';
-import RedisServer from 'redis-server';
 import bluebird from 'bluebird';
 const debug = require('debug')('redis');
 
@@ -11,24 +10,9 @@ const config = {
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
-class RedisConnection {
-    constructor() {
-        this.port = config.port;
-        // this.server = new RedisServer(config);
-        this.client = null;
-    }
+const client = redis.createClient(config.port);
 
-    run() {
-        this.client = redis.createClient(this.port);
-        // this.server.open()
-        //   .then(() => {
-        //       debug(`Redis server runs on port ${this.port}`);
-        //       this.client = redis.createClient(this.port);
-        //   })
-        //   .catch(err => {
-        //       debug(err);
-        //   })
-    }
-}
+client.on('connect' , () => debug('redis connected'));
+client.on('error' , (error) => debug(error));
 
-export default RedisConnection;
+export default client;
