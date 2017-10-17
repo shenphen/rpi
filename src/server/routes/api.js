@@ -25,9 +25,9 @@ router.post('/params', (req, res, next) => {
 
 router.get('/params', (req, res, next) => {
     const avaibleParams = ['temperature', 'humidity'];
-    if(req.body && req.body.from && req.body.end && avaibleParams.indexOf(req.body.param) !== -1) {
-        const FROM = parseInt(req.body.from, 10) || 0;
-        const TO = parseInt(req.body.end, 10) || 0;
+    if(req.query && req.query.from && req.query.to && avaibleParams.indexOf(req.query.param) !== -1) {
+        const FROM = parseInt(req.query.from, 10) || 0;
+        const TO = parseInt(req.query.to, 10) || 0;
 
         db.send_commandAsync('TS.RANGE', [req.body.param, FROM, TO])
         .then(result => {
