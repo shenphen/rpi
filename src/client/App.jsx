@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { Route } from 'react-router-dom';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -12,17 +13,31 @@ import classnames from 'classnames/bind';
 
 import styles from './App.css';
 
+import Login from './components/Login';
+
 const cx = classnames.bind(styles);
 // import DevTools from 'mobx-react-devtools';
 
 @inject('themeStore')
+@inject('tokenStore')
+@inject('routing')
 @observer
 class App extends Component {
 
   constructor(props) {
     super(props);
 
+    this.state = {
+      loggedIn: false
+    }
+
+    this.checkToken();
     this.handleChange = this.handleChange.bind(this);
+    this.checkToken = this.checkToken.bind(this);
+  }
+
+  componentWillReact() {
+    this.checkToken()
   }
 
   handleChange(event, index) {
@@ -36,25 +51,51 @@ class App extends Component {
   render() {
     // const { location, push, goBack } = this.props.themeStore;
     const { darkTheme } = this.props.themeStore;
+
     return (
       <MuiThemeProvider muiTheme={darkTheme ? getMuiTheme(darkBaseTheme) : null}>
-        <div className={cx('clearfix')}>
-          <TopBar />
-          <Menu handleChange={this.handleChange} />
-          <Content />
-          
-          {/*<span>Current pathname: {location.pathname}</span>
-          <button onClick={() => push('/test')}>Change url</button>
-          <button onClick={() => goBack()}>Go Back</button>*/}
-          {/* <DevTools /> */}
-        </div>
+
+          <Route path="/" render={({location}) => {
+              return this.state.loggedIn && location.pathname !== '/login' ? (
+                    <div className={cx('clearfix')}>
+                      <TopBar />
+                      <Menu handleChange={this.handleChange} />
+                      <Content />
+                    </div>
+              ) :
+
+              (
+                <Login />
+              )
+          }} />
       </MuiThemeProvider>
 
     );
   }
 
-  onReset = () => {
-    this.props.themeStore.resetTimer();
+  checkToken() {
+    return fetch("/auth", {
+      method: "POST",
+      headers: new Headers({"Content-Type": "application/json"}),
+      body: JSON.stringify({token: localStorage.token})
+    })
+    .then(res => {
+      res.json().then(json => {
+
+        this.setState({loggedIn: json.access});
+
+        if(json.redirectToLogin) {
+          const { push, location } = this.props.routing;
+          if(location.pathname !== '/login') push('/login');
+        }
+
+      })
+    })
+    .catch(err => {
+        console.log(err);
+        return false;
+    })
+   
   }
 };
 
