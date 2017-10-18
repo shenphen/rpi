@@ -14,12 +14,12 @@ class ChartsComponent extends React.Component {
         return (
             <Resizable>
                 <ChartContainer timeRange={series.range()} >
-                    <ChartRow height="300">
+                    <ChartRow height="800">
                         <YAxis
                             id="rain"
                             label="Rainfall (inches/hr)"
                             min={0}
-                            max={1.5}
+                            max={40}
                             format=".2f"
                             width="70"
                             type="linear"
