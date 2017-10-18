@@ -30,17 +30,10 @@ router.get('/params', (req, res, next) => {
         const TO = parseInt(req.query.to, 10) || 0;
 
         db.send_commandAsync('TS.RANGE', [req.query.param, FROM, TO])
-        .then(range => {
-
-            let data = {};
-
-            for(let i = 0, l = range.length; i < l; ++i) {
-                data[range[i][0]] = range[i][1];
-            }
-            
+        .then(data => {
             res.json({
                 status: 'OK',
-                data: JSON.stringify(data)
+                data
             })
         })
         .catch(err => {
