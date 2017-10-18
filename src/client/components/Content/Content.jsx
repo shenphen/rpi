@@ -1,16 +1,22 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 import { inject, observer } from "mobx-react";
 
 import Paper from 'material-ui/Paper';
-
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
 import styles from './Content.css'
-import { Route, Switch } from 'react-router-dom';
+
+import Charts from '../Charts';
 
 const Home = () => (
   <div>
     <h2>Home</h2>
+    <div>
+      <strong>Temperatura i wilgotość</strong>
+      <hr />
+      <Charts/>
+    </div>
   </div>
 )
 
