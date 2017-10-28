@@ -46,7 +46,7 @@ const NotFound = () => (
     return (
       <Paper className={styles.root}>
         <Switch>
-          <Route exact path="/state" compongit difent={State}/>
+          <Route exact path="/state" component={State}/>
           <Route path="/about" component={About}/>
           <Route path="/statistics" component={Statistics}/>
           <Route path="/dashboard" component={Home}/>
