@@ -19,7 +19,8 @@ class State extends React.Component {
                 temperature: null,
                 humidity: null,
                 time: null,
-            }
+            },
+            series: null
         }
 
         this.th = null;
@@ -30,13 +31,22 @@ class State extends React.Component {
             fetch('/api/params?recent=true')
             .then(res => {
                 res.json().then(json => {
-                    
+
+                    const temperature = json.data[0],
+                          humidity = json.data[1],
+                          time = json.data[2];
+
                     this.setState({
-                        current: {
-                            temperature: json.data[0],
-                            humidity: json.data[1],
-                            time: json.data[2]
-                        }
+                        current: { temperature, humidity, time },
+                        series: new TimeSeries({
+                            name: "current_temp_hum",
+                            columns: ["index", "temperature", "humidity"],
+                            points: time ? time.map((date, index) => [
+                                Index.getIndexString("1s", new Date(date*1000+7200000)),
+                                temperature[index],
+                                humidity[index]
+                            ]) : []
+                        })
                     })
                 })
                 .catch(err => console.log(err))
@@ -52,28 +62,19 @@ class State extends React.Component {
     render() {
 
         const { time, temperature, humidity } = this.state.current;
-
-        const series = new TimeSeries({
-            name: "current_temp_hum",
-            columns: ["index", "temperature", "humidity"],
-            points: time.map((date, index) => [
-                Index.getIndexString("1s", new Date(date*1000+7200000)),
-                temperature[index],
-                humidity[index]
-            ])
-        });
+        const { series } = this.state;
 
         return (
             <div>
                 <h2>Stan</h2>
 
                 <div>
-                    <p>Parametry procesu z czasu: {this.state.current.time && new Date(this.state.current.time[0]).toDateString()}</p>
-                    <p>Temperatura: {this.state.current.temperature && this.state.current.temperature[0] + '℃'}</p>
-                    <p>Wilgoć: {this.state.current.humidity && this.state.current.humidity[0] + '%'}</p>
+                    <p>Parametry procesu z czasu: {time && new Date(time[0]*1000 + 7200000).toDateString()}</p>
+                    <p>Temperatura: {temperature && temperature[temperature.length - 1] + '℃'}</p>
+                    <p>Wilgoć: {humidity && humidity[humidity.length - 1] + '%'}</p>
                 </div>
 
-                <Resizable>
+                {series && <Resizable>
                     <ChartContainer timeRange={series.range()} >
                         <ChartRow height="800">
                             <YAxis
@@ -111,6 +112,7 @@ class State extends React.Component {
                         </ChartRow>
                     </ChartContainer>
                 </Resizable>
+                }
             </div>
         )
     }
