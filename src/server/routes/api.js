@@ -12,12 +12,12 @@ router.post('/params', (req, res, next) => {
         db.send_command('TS.ADD', ['temperature', time, temperature]);
         db.send_command('TS.ADD', ['humidity', time, humidity]);
 
-        db.lpush('last_temperature', temperature);
-        db.ltrim('last_temperature', 0, 119);
-        db.lpush('last_humidity', humidity);
-        db.ltrim('last_humidity', 0, 119);
-        db.lpush('last_time', time);
-        db.ltrim('last_time', 0, 119);
+        db.rpush('last_temperature', temperature);
+        db.ltrim('last_temperature', -120, -1);
+        db.rpush('last_humidity', humidity);
+        db.ltrim('last_humidity', -120, -1);
+        db.rpush('last_time', time);
+        db.ltrim('last_time', -120, -1);
 
         res.json({
             status: 'OK',
