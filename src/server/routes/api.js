@@ -54,9 +54,9 @@ router.get('/params', (req, res, next) => {
         params.forEach(param => {
             queries.push(db.lrangeAsync(param, 0, -1));
         })
+
         Promise.all(queries)
         .then(data => {
-            console.log('DANE', data);
             res.json({
                 status: 'OK',
                 data
