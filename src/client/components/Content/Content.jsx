@@ -8,6 +8,7 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import styles from './Content.css'
 
 import Charts from '../Charts';
+import State from '../State';
 
 const Home = () => (
   <div>
@@ -17,12 +18,6 @@ const Home = () => (
       <hr />
       <Charts/>
     </div>
-  </div>
-)
-
-const State = () => (
-  <div>
-    <h2>State</h2>
   </div>
 )
 
