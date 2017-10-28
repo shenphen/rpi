@@ -12,6 +12,13 @@ router.post('/params', (req, res, next) => {
         db.send_command('TS.ADD', ['temperature', time, temperature]);
         db.send_command('TS.ADD', ['humidity', time, humidity]);
 
+        db.lpush('last_temperature', temperature);
+        db.ltrim('last_temperature', 0, 119);
+        db.lpush('last_humidity', humidity);
+        db.ltrim('last_humidity', 0, 119);
+        db.lpush('last_time', time);
+        db.ltrim('last_time', 0, 119);
+
         res.json({
             status: 'OK',
         })
@@ -39,6 +46,25 @@ router.get('/params', (req, res, next) => {
         .catch(err => {
             debug(err);
         });
+    }
+    else if(req.query && req.query.recent) {
+        let queries = [];
+        const params = ['last_temperature', 'last_humidity', 'last_time'];
+
+        params.forEach(param => {
+            queries.push(db.lrangeAsync(param, 0, -1));
+        })
+        Promise.all(queries)
+        .then(data => {
+            console.log('DANE', data);
+            res.json({
+                status: 'OK',
+                data
+            })
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
     else {
         res.json({
