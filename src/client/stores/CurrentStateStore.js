@@ -13,7 +13,7 @@ class CurrentState {
             .catch(err => console.log(err))
         })
         .catch(err => console.log(err))
-    }, 2200);
+    }, 2000);
   }
 }
 

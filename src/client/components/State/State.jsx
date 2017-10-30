@@ -20,7 +20,7 @@ class State extends React.Component {
             name: "current_temp_hum",
             columns: ["index", "temperature", "humidity"],
             points: time ? time.map((date, index) => [
-                Index.getIndexString("1m", new Date(date*1000)),
+                Index.getIndexString("2s", new Date(date*1000)),
                 temperature[index],
                 humidity[index]
             ]) : []
