@@ -1,82 +1,44 @@
 import React from 'react';
+import { inject, observer } from 'mobx-react';
+import moment from 'moment';
 import { Charts, ChartContainer, ChartRow, YAxis, LineChart, Resizable, styler } from "react-timeseries-charts";
 import { TimeSeries, Index } from "pondjs";
 
-//import styles from './State.css';
-
 const styles = styler([
     {key: "humidity", color: "steelblue", width: 1, dashed: true},
-    {key: "precip", color: "#F68B24", width: 2}
+    {key: "temperature", color: "#F68B24", width: 2}
 ]);
 
+@inject('currentStateStore')
+@observer
 class State extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            current: {
-                temperature: null,
-                humidity: null,
-                time: null,
-            },
-            series: null
-        }
-
-        this.th = null;
-    }
-
-    componentDidMount() {
-        this.th = setInterval(() => {
-            fetch('/api/params?recent=true')
-            .then(res => {
-                res.json().then(json => {
-
-                    const temperature = json.data[0],
-                          humidity = json.data[1],
-                          time = json.data[2];
-
-                    this.setState({
-                        current: { temperature, humidity, time },
-                        series: new TimeSeries({
-                            name: "current_temp_hum",
-                            columns: ["index", "temperature", "humidity"],
-                            points: time ? time.map((date, index) => [
-                                Index.getIndexString("1s", new Date(date*1000+7200000)),
-                                temperature[index],
-                                humidity[index]
-                            ]) : []
-                        })
-                    })
-                })
-                .catch(err => console.log(err))
-            })
-            .catch(err => console.log(err))
-        }, 2200)
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.th);
-    }
 
     render() {
 
-        const { time, temperature, humidity } = this.state.current;
-        const { series } = this.state;
+        const [ temperature, humidity, time ] = this.props.currentStateStore.data;
+        const series = new TimeSeries({
+            name: "current_temp_hum",
+            columns: ["index", "temperature", "humidity"],
+            points: time ? time.map((date, index) => [
+                Index.getIndexString("1m", new Date(date*1000)),
+                temperature[index],
+                humidity[index]
+            ]) : []
+        })
 
         return (
             <div>
                 <h2>Stan</h2>
 
                 <div>
-                    <p>Parametry procesu z czasu: {time && new Date(time[0]*1000 + 7200000).toDateString()}</p>
+                    <p>Parametry procesu z czasu: {time && moment(time).format('DD.MM.Y HH:mm:ss')}</p>
                     <p>Temperatura: {temperature && temperature[temperature.length - 1] + '℃'}</p>
                     <p>Wilgoć: {humidity && humidity[humidity.length - 1] + '%'}</p>
                 </div>
 
                 {series && <Resizable>
                     <ChartContainer timeRange={series.range()} >
-                        <ChartRow height="800">
+                        <ChartRow height="450">
                             <YAxis
                                 id="temperature"
                                 label="Temperature [℃]"
@@ -102,7 +64,7 @@ class State extends React.Component {
                             </Charts>
                             <YAxis
                                 id="humidity"
-                                label="Humidity (%)"
+                                label="Humidity [%]"
                                 min={0}
                                 max={100}
                                 format=".2f"

@@ -6,7 +6,7 @@ import series from './data';
 
 const styles = styler([
     {key: "humidity", color: "steelblue", width: 1, dashed: true},
-    {key: "precip", color: "#F68B24", width: 2}
+    {key: "temperature", color: "#F68B24", width: 2}
 ]);
 
 class ChartsComponent extends React.Component {
@@ -14,10 +14,10 @@ class ChartsComponent extends React.Component {
         return (
             <Resizable>
                 <ChartContainer timeRange={series.range()} >
-                    <ChartRow height="800">
+                    <ChartRow height="600">
                         <YAxis
-                            id="rain"
-                            label="Rainfall (inches/hr)"
+                            id="temperature"
+                            label="Temperature [℃]"
                             min={0}
                             max={40}
                             format=".2f"
@@ -26,8 +26,8 @@ class ChartsComponent extends React.Component {
                         />
                         <Charts>
                             <LineChart
-                                axis="rain"
-                                columns={["precip"]}
+                                axis="temperature"
+                                columns={["temperature"]}
                                 series={series}
                                 style={styles}
                             />
