@@ -31,7 +31,7 @@ class State extends React.Component {
                 <h2>Stan</h2>
 
                 <div>
-                    <p>Parametry procesu z czasu: {time && moment(time).format('DD.MM.Y HH:mm:ss')}</p>
+                    <p>Parametry procesu z czasu: {time && moment.unix(time).format('DD.MM.Y HH:mm:ss')}</p>
                     <p>Temperatura: {temperature && temperature[temperature.length - 1] + '℃'}</p>
                     <p>Wilgoć: {humidity && humidity[humidity.length - 1] + '%'}</p>
                 </div>
