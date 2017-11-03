@@ -8,6 +8,7 @@ import muiThemeable from 'material-ui/styles/muiThemeable';
 import styles from './Content.css'
 
 import Charts from '../Charts';
+import State from '../State';
 
 const Home = () => (
   <div>
@@ -17,12 +18,6 @@ const Home = () => (
       <hr />
       <Charts/>
     </div>
-  </div>
-)
-
-const State = () => (
-  <div>
-    <h2>State</h2>
   </div>
 )
 
@@ -51,7 +46,7 @@ const NotFound = () => (
     return (
       <Paper className={styles.root}>
         <Switch>
-          <Route exact path="/state" compongit difent={State}/>
+          <Route exact path="/state" component={State}/>
           <Route path="/about" component={About}/>
           <Route path="/statistics" component={Statistics}/>
           <Route path="/dashboard" component={Home}/>
