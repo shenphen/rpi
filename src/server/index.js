@@ -1,8 +1,10 @@
 import { Server } from 'http';
-import app from './server'
+import app from './server';
+import socket from 'socket.io';
 const debug = require('debug')('server');
 
 const server = new Server(app);
+const io = socket(server);
 
 let port = process.env.PORT || 3000;
 const env = process.env.NODE_ENV || 'production';
@@ -14,6 +16,15 @@ server.listen(port, err => {
 
   process.env.PORT = port;
   console.info(`Server running on http://localhost:${port} [${env}]`);
+});
+
+io.on('connection', function (socket) {
+  console.log(socket.id);
+
+  socket.on('control', function (data) {
+    console.log(data);
+    socket.broadcast.emit('control', data);
+  });
 });
 
 server.on('error', errorHandler);
