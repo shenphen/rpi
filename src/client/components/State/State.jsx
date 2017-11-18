@@ -79,17 +79,32 @@ class State extends React.Component {
                     <div>
                         <span>Rodzaj sterowania</span>
                         <RadioButton
-                            onClick={() => {this.setState({manualControl: true})}}
-                            label="Ręczne" checked={manualControl} />
+                            label="Ręczne" checked={manualControl}
+                            onClick={() => {
+                                this.setState({manualControl: true});
+                                socket.emit('control', {
+                                    manualControl: true,
+                                    state: autoControl
+                                });
+                            }}
+                        />
                         <RadioButton
-                            onClick={() => {this.setState({manualControl: false})}}
-                            label="Automatyczne" checked={!manualControl} />
+                            label="Automatyczne" checked={!manualControl}
+                            onClick={() => {
+                                this.setState({manualControl: false});
+                                socket.emit('control', {
+                                    manualControl: false,
+                                });
+                            }}
+                        />
                     </div>
+
                     {manualControl ?
                         <div>
                             <Toggle
                             name="heater"
                             label="Ogrzewanie"
+                            defaultToggled={autoControl && autoControl.heater}
                             style={{marginBottom: 16}}
                             thumbStyle={{backgroundColor: '#ffcccc'}}
                             thumbSwitchedStyle={{backgroundColor: 'red'}}
@@ -99,6 +114,7 @@ class State extends React.Component {
                             <Toggle
                             name="cooler"
                             label="Klimatyzacja"
+                            defaultToggled={autoControl && autoControl.cooler}
                             style={{marginBottom: 16}}
                             thumbStyle={{backgroundColor: '#1A99FF'}}
                             thumbSwitchedStyle={{backgroundColor: '#006DC4'}}
@@ -108,6 +124,7 @@ class State extends React.Component {
                             <Toggle
                             name="humiditifier"
                             label="Zraszacz"
+                            defaultToggled={autoControl && autoControl.humiditifier}
                             style={{marginBottom: 16}}
                             thumbStyle={{backgroundColor: '#91FF70'}}
                             thumbSwitchedStyle={{backgroundColor: '#34E300'}}
