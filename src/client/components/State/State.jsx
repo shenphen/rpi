@@ -81,7 +81,7 @@ class State extends React.Component {
                         <RadioButton
                             label="Ręczne" checked={manualControl}
                             onClick={() => {
-                                this.setState({manualControl: true});
+                                this.setState({manualControl: true, manualControlState: autoControl});
                                 socket.emit('control', {
                                     manualControl: true,
                                     state: autoControl
@@ -141,7 +141,7 @@ class State extends React.Component {
                     }
                 </div>
 
-                {series.length && <Resizable>
+                {series && <Resizable>
                     <ChartContainer timeRange={series.range()} >
                         <ChartRow height="450">
                             <YAxis
