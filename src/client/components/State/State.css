@@ -1,0 +1,44 @@
+.info {
+    display: flex;
+    justify-content: space-around;
+}
+
+.state {
+    position: relative;
+    display: table;
+    height: auto;
+    width: 100%;
+    margin-bottom: 16px;
+    font-family: Roboto, sans-serif;
+    line-height: 24px;
+}
+
+.diodeWrapper {
+    width: 46px;
+    display: inline-block;
+}
+
+.diode {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.diode.red {
+    background: radial-gradient(rgb(248,80,50) 0%, rgb(231,56,39) 100%);
+}
+
+.diode.blue {
+    background: radial-gradient(rgb(73,155,234) 0%, rgb(0,70,145) 100%);
+}
+
+.diode.green {
+    background: radial-gradient(rgb(210,255,82) 0%, rgb(120,199,46) 100%);
+}
+
+.diode.disabled {
+    background: radial-gradient(rgb(202, 191, 191) 0%, rgb(113, 91, 91) 100%);
+}
