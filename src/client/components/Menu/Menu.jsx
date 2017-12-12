@@ -34,7 +34,7 @@ import styles from './Menu.css'
         },
         {
           value:'/state',
-          primaryText: 'Stan',
+          primaryText: 'Aktualny stan',
           leftIcon: <Storage />
         },
         {
@@ -47,11 +47,6 @@ import styles from './Menu.css'
           leftIcon: <Settings />,
           primaryTogglesNestedList: true,
           nestedItems:[
-            {
-              primaryText: 'Język',
-              primaryTogglesNestedList: true,
-              leftIcon: <Language />,
-            },
             {
               primaryText: 'Tryb ekranu',
               primaryTogglesNestedList: true,

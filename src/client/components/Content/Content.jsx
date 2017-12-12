@@ -12,18 +12,19 @@ import State from '../State';
 
 const Home = () => (
   <div>
-    <h2>Home</h2>
+    <h2>Dashboard</h2>
     <div>
-      <strong>Temperatura i wilgotość</strong>
-      <hr />
-      <Charts/>
+      <strong>Witamy w panelu administratora</strong>
     </div>
   </div>
 )
 
 const Statistics = () => (
   <div>
-    <h2>Statistics</h2>
+    <h2>Statystyki</h2>
+    <strong>Temperatura</strong>
+    <hr />
+    <Charts/>
   </div>
 )
 
@@ -35,7 +36,7 @@ const About = () => (
 
 const NotFound = () => (
   <div>
-    <h2>NotFound</h2>
+    <h2>Nie znaleziono strony</h2>
   </div>
 )
 
@@ -47,7 +48,7 @@ const NotFound = () => (
       <Paper className={styles.root}>
         <Switch>
           <Route exact path="/state" component={State}/>
-          <Route path="/about" component={About}/>
+          {/* <Route path="/about" component={About}/> */}
           <Route path="/statistics" component={Statistics}/>
           <Route path="/dashboard" component={Home}/>
           <Route path="/*" component={NotFound}/>
